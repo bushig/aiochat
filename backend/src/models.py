@@ -20,6 +20,7 @@ channels = sqlalchemy.Table(
     'channels', metadata,
     sqlalchemy.Column('id', sqlalchemy.Integer, nullable=False, primary_key=True),
     sqlalchemy.Column('name', sqlalchemy.String(256), nullable=False ,unique=True),
+    sqlalchemy.Column('passwd', sqlalchemy.String(256), nullable=True),
 
     sqlite_autoincrement=True
 )
