@@ -27,6 +27,8 @@ async def channels_list(request):
 @login_required
 async def create_channel(request):
     data = await request.json()
+    if data.get('name') == "" or data.get('name') is None:
+        return web.json_response({"error": 'name cant be blank.'})
     async with aiosqlite.connect('../database.db') as db:
         cursor = await db.execute('SELECT id, name FROM channels where name=:name', data)
         if await cursor.fetchone() is not None:

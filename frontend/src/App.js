@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import ChannelsList from './components/ChannelsList';
 import Register from './components/Register';
-import { withCookies, Cookies } from 'react-cookie';
+import { withCookies } from 'react-cookie';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends Component {
+    callBack = () =>{
+        this.forceUpdate();
+    };
   render() {
       const { cookies } = this.props;
       console.log(cookies.get('username'));
@@ -13,7 +16,7 @@ class App extends Component {
       <ChannelsList/>
     );
     } else {
-        return (<Register />)
+        return (<Register callBack = {this.callBack}/>)
     }
   }
 }

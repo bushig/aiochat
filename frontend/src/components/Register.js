@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import axios from 'axios';
 
 const MAINSITE = 'localhost:8000';
 
@@ -10,7 +9,7 @@ class Register extends Component {
     }
     onRegister = () => {
         console.log('register');
-        let data = {username: 'Fred', password: 'qwerty1'};
+        let data = {username: this.state.username, password: this.state.password};
         fetch(`http://${MAINSITE}/api/register`, {
             method: 'POST',
             headers: {
@@ -23,6 +22,7 @@ class Register extends Component {
             return response.json()
         }).then((json)=>{
             console.log(json);
+            this.props.callBack();
         })
             .catch(function (error) {
                 console.log(error);
@@ -31,7 +31,7 @@ class Register extends Component {
 
     onLogin = () => {
         console.log('login');
-        let data = {username: 'Fred', password: 'qwerty1'};
+        let data = {username: this.state.username, password: this.state.password};
         fetch(`http://${MAINSITE}/api/login`, {
             method: 'POST',
             headers: {
@@ -44,6 +44,7 @@ class Register extends Component {
             return response.json()
         }).then((json)=>{
             console.log(json);
+            this.props.callBack();
         })
             .catch(function (error) {
                 console.log(error);
@@ -53,7 +54,7 @@ class Register extends Component {
     let change = {};
     change[e.target.name] = e.target.value;
     this.setState(change);
-  }
+  };
     render() {
         return (
             <div className="col-md-4">

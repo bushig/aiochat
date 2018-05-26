@@ -10,7 +10,7 @@ from passlib.hash import sha256_crypt
 class DBAuthorizationPolicy(AbstractAuthorizationPolicy):
     async def authorized_userid(self, identity):
         async with aiosqlite.connect('../database.db') as conn:
-            cursor = await conn.execute('SELECT id, login, passwd FROM users WHERE login=?', identity)
+            cursor = await conn.execute('SELECT id, login, passwd FROM users WHERE login=?', (identity, ))
             if await cursor.fetchone():
                 return identity
             else:
