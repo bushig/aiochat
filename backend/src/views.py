@@ -3,7 +3,7 @@ import aiosqlite
 from aiohttp_session import new_session, get_session
 from aiohttp_security import (
     remember, forget, authorized_userid,
-    has_permission, login_required,
+    has_permission, login_required
 )
 import sqlite3
 import json
@@ -47,8 +47,35 @@ async def create_channel(request):
 async def delete_channel(request):
     pass
 
+@login_required
 async def join_channel(request):
-    pass
+    data = await request.json()
+    channel = data.get('channel')
+    if channel is None or channel == '':
+        return web.json_response({'error': 'Channel cant be empty'})
+    async with aiosqlite.connect('../database.db') as db:
+        cursor = await db.execute('SELECT id, name, passwd FROM channels where id=?', (channel,))
+        row = await cursor.fetchone()
+        if row is None:
+            return web.json_response({'error': 'Channel does not exists'})
+        password = data.get('password')
+        sha256 = encrypt_password(password)
+        success = False
+        if row[2]:
+            if sha256 == row[2]:
+                success = True
+            else:
+                success = False
+        else:
+            success = True
+        if success:
+            resp = web.json_response({"status": "success"})
+            resp.set_cookie('channels', row[0])
+            return resp
+        else:
+            return web.json_response({'error': 'Invalid credentials.'})
+
+
 
 async def register(request):
     data = await request.json()

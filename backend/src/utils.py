@@ -30,4 +30,6 @@ async def check_credentials(username, password):
     return False
 
 async def encrypt_password(password):
+    if password is None:
+        return None
     return sha256_crypt.encrypt(password)

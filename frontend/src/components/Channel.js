@@ -1,4 +1,4 @@
-aimport React, { Component } from 'react';
+import React, { Component } from 'react';
 
 
 class Channel extends Component {

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
+import ReactLoading from 'react-loading';
 
-const MAINSITE = 'localhost:8000';
+const MAINSITE = 'https://aiochat.tk';
 
 class ChannelsList extends Component {
     constructor() {
@@ -8,12 +9,13 @@ class ChannelsList extends Component {
         this.state = {channels: [], loading: true, channelName: ""}
     }
 
-    componentDidMount() {
+    componentDidMount=()=> {
         this.updateChannelList()
     }
 
-    updateChannelList() {
-        fetch(`http://${MAINSITE}/api`, {
+    updateChannelList = ()=> {
+        this.setState({loading: true});
+        fetch(`${MAINSITE}/api`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -21,16 +23,17 @@ class ChannelsList extends Component {
                 'Cache': 'no-cache'
             },
             credentials: 'include'
-        }).then(function (response) {
+        }).then((response) =>{
             return response.json()
         }).then((json) => {
             console.log(json);
-            let state = {channels: json};
+            let state = {channels: json, loading:false};
             this.setState(state);
         })
-            .catch(function (error) {
+            .catch( (error) =>{
                 console.log(error);
-                //TODO: Delete cookie
+                console.log(this);
+                this.props.removeCookies();
             });
     }
 
@@ -41,7 +44,7 @@ class ChannelsList extends Component {
     onAddHandler = (e)=>{
         let name = this.state.channelName;
         console.log(name);
-        fetch(`http://${MAINSITE}/api`, {
+        fetch(`${MAINSITE}/api`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -58,7 +61,7 @@ class ChannelsList extends Component {
         })
             .catch(function (error) {
                 console.log(error);
-                //TODO: Delete cookie
+                this.props.removeCookies();
             });
     };
     onChangeHandler = (e) => {
@@ -67,6 +70,9 @@ class ChannelsList extends Component {
     this.setState(change);
   };
     render() {
+        const loading = this.state.loading ? <ReactLoading color={'#242424'}/> : <ul className="list-group">
+                    {this.state.channels.map((channel)=><li key={channel.id} className="list-group-item" onClick={this.onClickHandler}>{channel.name}</li>)}
+                </ul>;
         return (
             <div className="well text-right col-md-2 list-left">
                 <div className="input-group">
@@ -75,9 +81,7 @@ class ChannelsList extends Component {
                         <button type="button" id="add" className="btn btn-success btn-sm" onClick={this.onAddHandler}>Add</button>
                     </div>
                 </div>
-                <ul className="list-group">
-                    {this.state.channels.map((channel)=><li key={channel.id} className="list-group-item" onClick={this.onClickHandler}>{channel.name}</li>)}
-                </ul>
+                {loading}
             </div>
         )
     }

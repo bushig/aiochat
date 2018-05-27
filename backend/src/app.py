@@ -28,4 +28,4 @@ setup_security(app, SessionIdentityPolicy(), DBAuthorizationPolicy())
 
 setup_routes(app, cors)
 
-web.run_app(app, port=8000)
+web.run_app(app, port=7000)

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-const MAINSITE = 'localhost:8000';
+const MAINSITE = 'https://aiochat.tk';
 
 class Register extends Component {
     constructor(){
@@ -10,7 +10,7 @@ class Register extends Component {
     onRegister = () => {
         console.log('register');
         let data = {username: this.state.username, password: this.state.password};
-        fetch(`http://${MAINSITE}/api/register`, {
+        fetch(`${MAINSITE}/api/register`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -32,7 +32,7 @@ class Register extends Component {
     onLogin = () => {
         console.log('login');
         let data = {username: this.state.username, password: this.state.password};
-        fetch(`http://${MAINSITE}/api/login`, {
+        fetch(`${MAINSITE}/api/login`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
