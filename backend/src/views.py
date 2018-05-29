@@ -1,4 +1,5 @@
 from aiohttp import web
+import aiohttp
 import aiosqlite
 from aiohttp_session import new_session, get_session
 from aiohttp_security import (
@@ -22,6 +23,13 @@ async def channels_list(request):
 
     response_obj = {'status': 'success'}
     return web.json_response(result)
+
+async def listen_chat(request):
+    ws = web.WebSocketResponse()
+    await ws.prepare(request)
+
+    async for msg in ws:
+        if msg.type == aiohttp.WSMsgType.TEXT:
 
 
 @login_required

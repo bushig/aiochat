@@ -1,12 +1,16 @@
 import React, {Component} from 'react';
 import ReactLoading from 'react-loading';
 
+import Channel from './Channel'
 const MAINSITE = 'https://aiochat.tk';
 
 class ChannelsList extends Component {
     constructor() {
         super();
-        this.state = {channels: [], loading: true, channelName: ""}
+        this.state = {channels: [], loading: true, channelName: "", currentChat:null}
+    }
+    onLeaveHandler = () => {
+        this.setState({currentChat: null})
     }
 
     componentDidMount=()=> {
@@ -37,8 +41,9 @@ class ChannelsList extends Component {
             });
     }
 
-    onClickHandler(e) {
+    onClickHandler(id) {
         console.log('Clicked');
+        this.setState({currentChat: id})
     }
 
     onAddHandler = (e)=>{
@@ -71,8 +76,9 @@ class ChannelsList extends Component {
   };
     render() {
         const loading = this.state.loading ? <ReactLoading color={'#242424'}/> : <ul className="list-group">
-                    {this.state.channels.map((channel)=><li key={channel.id} className="list-group-item" onClick={this.onClickHandler}>{channel.name}</li>)}
+                    {this.state.channels.map((channel)=><li key={channel.id} className="list-group-item" onClick={()=>this.onClickHandler(channel.id)}>{channel.name}</li>)}
                 </ul>;
+        if (this.state.currentChat) return <Channel id={this.state.currentChat} onLeaveHandler = {this.onLeaveHandler} />
         return (
             <div className="well text-right col-md-2 list-left">
                 <div className="input-group">
