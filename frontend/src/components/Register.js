@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-const MAINSITE = 'https://aiochat.tk';
+import {MAINSITE} from '../config'
 
 class Register extends Component {
     constructor(){

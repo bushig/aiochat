@@ -1,0 +1,1 @@
+export const MAINSITE = 'http://localhost:7000';

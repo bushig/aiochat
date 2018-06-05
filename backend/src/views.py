@@ -30,7 +30,7 @@ async def listen_chat(request):
 
     async for msg in ws:
         if msg.type == aiohttp.WSMsgType.TEXT:
-
+            print(msg)
 
 @login_required
 async def create_channel(request):

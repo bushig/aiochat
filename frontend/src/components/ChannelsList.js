@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import ReactLoading from 'react-loading';
 
 import Channel from './Channel'
-const MAINSITE = 'https://aiochat.tk';
+import {MAINSITE} from '../config'
+
 
 class ChannelsList extends Component {
     constructor() {
